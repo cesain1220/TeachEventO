@@ -39,15 +39,27 @@ fun DetailScreen(
                 title = { Text("") },
                 navigationIcon = {
                     IconButton(onClick = onBackClick) {
-                        Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "Regresar", tint = Color.White)
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack, 
+                            contentDescription = "Regresar", 
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
                     }
                 },
                 actions = {
                     IconButton(onClick = {}) {
-                        Icon(imageVector = Icons.Default.Share, contentDescription = "Compartir", tint = Color.White)
+                        Icon(
+                            imageVector = Icons.Default.Share, 
+                            contentDescription = "Compartir", 
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
                     }
                     IconButton(onClick = {}) {
-                        Icon(imageVector = Icons.Default.Favorite, contentDescription = "Favorito", tint = Color.White)
+                        Icon(
+                            imageVector = Icons.Default.Favorite, 
+                            contentDescription = "Favorito", 
+                            tint = MaterialTheme.colorScheme.onPrimary
+                        )
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(containerColor = Color.Transparent)
@@ -59,27 +71,30 @@ fun DetailScreen(
                 modifier = Modifier.fillMaxSize().padding(innerPadding),
                 contentAlignment = Alignment.Center
             ) {
-                Text("Selecciona un evento para ver su detalle.")
+                Text(
+                    text = "Selecciona un evento para ver su detalle.",
+                    color = MaterialTheme.colorScheme.onBackground
+                )
             }
         } else {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .background(Color(0xFFF1F5F9))
+                    .background(MaterialTheme.colorScheme.background)
             ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(260.dp)
-                        .background(Color(0xFF0F172A))
+                        .background(MaterialTheme.colorScheme.primary)
                 ) {
                     AsyncImage(
                         model = event.imageUrl,
                         contentDescription = null,
                         modifier = Modifier.fillMaxSize(),
                         contentScale = ContentScale.Crop,
-                        alpha = 0.35f
+                        alpha = 0.4f
                     )
 
                     Box(
@@ -87,7 +102,7 @@ fun DetailScreen(
                             .fillMaxSize()
                             .background(
                                 Brush.verticalGradient(
-                                    colors = listOf(Color.Transparent, Color(0xFF0F172A)),
+                                    colors = listOf(Color.Transparent, MaterialTheme.colorScheme.primary),
                                     startY = 120f
                                 )
                             )
@@ -99,12 +114,12 @@ fun DetailScreen(
                             .padding(16.dp)
                     ) {
                         Surface(
-                            color = Color(0xFF334155),
+                            color = MaterialTheme.colorScheme.tertiary,
                             shape = RoundedCornerShape(4.dp)
                         ) {
                             Text(
-                                text = "CONGRESO INTERNACIONAL",
-                                color = Color(0xFF38BDF8),
+                                text = "EVENTO UNIVERSITARIO",
+                                color = MaterialTheme.colorScheme.onTertiary,
                                 style = MaterialTheme.typography.labelSmall,
                                 modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                                 fontWeight = FontWeight.Bold
@@ -113,7 +128,7 @@ fun DetailScreen(
                         Spacer(modifier = Modifier.height(8.dp))
                         Text(
                             text = event.title,
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             style = MaterialTheme.typography.headlineMedium,
                             fontWeight = FontWeight.Bold
                         )
@@ -125,7 +140,7 @@ fun DetailScreen(
                         .fillMaxWidth()
                         .offset(y = (-20).dp),
                     shape = RoundedCornerShape(topStart = 24.dp, topEnd = 24.dp),
-                    colors = CardDefaults.cardColors(containerColor = Color.White)
+                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
                 ) {
                     Column(modifier = Modifier.padding(24.dp)) {
 
@@ -133,13 +148,17 @@ fun DetailScreen(
                             text = "Descripción",
                             style = MaterialTheme.typography.titleMedium,
                             fontWeight = FontWeight.Bold,
-                            color = Color(0xFF0F172A)
+                            color = MaterialTheme.colorScheme.primary
                         )
                         Spacer(modifier = Modifier.height(6.dp))
-                        Text(text = event.description, style = MaterialTheme.typography.bodyMedium, color = Color(0xFF475569))
+                        Text(
+                            text = event.description, 
+                            style = MaterialTheme.typography.bodyMedium, 
+                            color = MaterialTheme.colorScheme.onSurface
+                        )
 
                         val statusText = if (event.hasAvailableSlots) "Cupos Disponibles" else "Agotado"
-                        val statusColor = if (event.hasAvailableSlots) Color(0xFF059669) else Color(0xFFDC2626)
+                        val statusColor = if (event.hasAvailableSlots) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.error
                         Text(
                             text = statusText,
                             style = MaterialTheme.typography.labelLarge,
@@ -150,14 +169,30 @@ fun DetailScreen(
 
                         Spacer(modifier = Modifier.height(14.dp))
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = "📅 ${event.date}", style = MaterialTheme.typography.bodyMedium, color = Color(0xFF64748B))
+                            Text(
+                                text = "📅 ${event.date}", 
+                                style = MaterialTheme.typography.bodyMedium, 
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                             Spacer(modifier = Modifier.width(16.dp))
-                            Text(text = "📍 ${event.location}", style = MaterialTheme.typography.bodyMedium, color = Color(0xFF64748B))
+                            Text(
+                                text = "📍 ${event.location}", 
+                                style = MaterialTheme.typography.bodyMedium, 
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
                         }
 
                         if (event.agenda.isNotEmpty()) {
-                            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp), color = Color(0xFFE2E8F0))
-                            Text(text = "Agenda", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = Color(0xFF0F172A))
+                            HorizontalDivider(
+                                modifier = Modifier.padding(vertical = 16.dp), 
+                                color = MaterialTheme.colorScheme.outlineVariant
+                            )
+                            Text(
+                                text = "Agenda", 
+                                style = MaterialTheme.typography.titleMedium, 
+                                fontWeight = FontWeight.Bold, 
+                                color = MaterialTheme.colorScheme.primary
+                            )
                             Spacer(modifier = Modifier.height(12.dp))
 
                             event.agenda.forEach { item ->
@@ -171,11 +206,16 @@ fun DetailScreen(
                                         text = item.time,
                                         style = MaterialTheme.typography.bodyMedium,
                                         fontWeight = FontWeight.Bold,
-                                        color = Color(0xFF0284C7),
+                                        color = MaterialTheme.colorScheme.secondary,
                                         modifier = Modifier.width(65.dp)
                                     )
                                     Column(modifier = Modifier.weight(1f)) {
-                                        Text(text = item.title, style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.Medium, color = Color(0xFF334155))
+                                        Text(
+                                            text = item.title, 
+                                            style = MaterialTheme.typography.bodyMedium, 
+                                            fontWeight = FontWeight.Medium, 
+                                            color = MaterialTheme.colorScheme.onSurface
+                                        )
                                     }
                                 }
                             }
@@ -184,13 +224,25 @@ fun DetailScreen(
                                 onClick = {},
                                 modifier = Modifier.align(Alignment.CenterHorizontally).padding(top = 8.dp)
                             ) {
-                                Text("Ver agenda completa", color = Color(0xFF0284C7), fontWeight = FontWeight.Bold)
+                                Text(
+                                    text = "Ver agenda completa", 
+                                    color = MaterialTheme.colorScheme.secondary, 
+                                    fontWeight = FontWeight.Bold
+                                )
                             }
                         }
 
                         if (event.speakers.isNotEmpty()) {
-                            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp), color = Color(0xFFE2E8F0))
-                            Text(text = "Ponentes", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = Color(0xFF0F172A))
+                            HorizontalDivider(
+                                modifier = Modifier.padding(vertical = 16.dp), 
+                                color = MaterialTheme.colorScheme.outlineVariant
+                            )
+                            Text(
+                                text = "Ponentes", 
+                                style = MaterialTheme.typography.titleMedium, 
+                                fontWeight = FontWeight.Bold, 
+                                color = MaterialTheme.colorScheme.primary
+                            )
                             Spacer(modifier = Modifier.height(12.dp))
 
                             event.speakers.forEach { speaker ->
@@ -210,21 +262,38 @@ fun DetailScreen(
                                     )
 
                                     Column(modifier = Modifier.padding(start = 12.dp)) {
-                                        Text(text = speaker.name, style = MaterialTheme.typography.bodyLarge, fontWeight = FontWeight.SemiBold, color = Color(0xFF334155))
-                                        Text(text = "${speaker.role} — ${speaker.company}", style = MaterialTheme.typography.bodySmall, color = Color(0xFF64748B))
+                                        Text(
+                                            text = speaker.name, 
+                                            style = MaterialTheme.typography.bodyLarge, 
+                                            fontWeight = FontWeight.SemiBold, 
+                                            color = MaterialTheme.colorScheme.onSurface
+                                        )
+                                        Text(
+                                            text = "${speaker.role} — ${speaker.company}", 
+                                            style = MaterialTheme.typography.bodySmall, 
+                                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        )
                                     }
                                 }
                             }
                         }
 
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp), color = Color(0xFFE2E8F0))
-                        Text(text = "Lugar", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold, color = Color(0xFF0F172A))
+                        HorizontalDivider(
+                            modifier = Modifier.padding(vertical = 16.dp), 
+                            color = MaterialTheme.colorScheme.outlineVariant
+                        )
+                        Text(
+                            text = "Lugar", 
+                            style = MaterialTheme.typography.titleMedium, 
+                            fontWeight = FontWeight.Bold, 
+                            color = MaterialTheme.colorScheme.primary
+                        )
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Card(
                             modifier = Modifier.fillMaxWidth().height(140.dp),
                             shape = RoundedCornerShape(12.dp),
-                            colors = CardDefaults.cardColors(containerColor = Color(0xFFF8FAFC))
+                            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
                         ) {
                             Row(
                                 modifier = Modifier.fillMaxSize().padding(12.dp),
@@ -232,8 +301,17 @@ fun DetailScreen(
                             ) {
                                 Text("🗺️", style = MaterialTheme.typography.headlineLarge)
                                 Column(modifier = Modifier.padding(start = 12.dp)) {
-                                    Text(text = "Centro de Convenciones", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold, color = Color(0xFF1E293B))
-                                    Text(text = "Av. Tecnológica, San Salvador, El Salvador", style = MaterialTheme.typography.bodySmall, color = Color(0xFF64748B))
+                                    Text(
+                                        text = "Campus Universitario", 
+                                        style = MaterialTheme.typography.bodyMedium, 
+                                        fontWeight = FontWeight.SemiBold, 
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                    Text(
+                                        text = "Edificio Central, Facultad de Ingeniería", 
+                                        style = MaterialTheme.typography.bodySmall, 
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
                                 }
                             }
                         }
