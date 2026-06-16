@@ -13,16 +13,14 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
 
+val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "user_preferences")
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "theme_preferences")
-
-class ThemeDataStore(private val context: Context) {
+class UserPreferencesRepository(private val context: Context) {
 
     companion object {
-
         private val IS_DARK_MODE = booleanPreferencesKey("is_dark_mode")
+        private val IS_LOGGED_IN = booleanPreferencesKey("is_logged_in")
     }
-
 
     val isDarkModeFlow: Flow<Boolean> = context.dataStore.data
         .catch { exception ->
@@ -33,14 +31,30 @@ class ThemeDataStore(private val context: Context) {
             }
         }
         .map { preferences ->
-
             preferences[IS_DARK_MODE] ?: false
         }
 
+    val isLoggedInFlow: Flow<Boolean> = context.dataStore.data
+        .catch { exception ->
+            if (exception is IOException) {
+                emit(emptyPreferences())
+            } else {
+                throw exception
+            }
+        }
+        .map { preferences ->
+            preferences[IS_LOGGED_IN] ?: false
+        }
 
     suspend fun saveThemePreference(isDarkMode: Boolean) {
         context.dataStore.edit { preferences ->
             preferences[IS_DARK_MODE] = isDarkMode
+        }
+    }
+
+    suspend fun saveLoginState(isLoggedIn: Boolean) {
+        context.dataStore.edit { preferences ->
+            preferences[IS_LOGGED_IN] = isLoggedIn
         }
     }
 }
