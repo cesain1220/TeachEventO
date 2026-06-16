@@ -17,10 +17,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import androidx.room.Room
 import com.example.teachevent.data.local.AppDatabase
 import com.example.teachevent.data.local.ThemeDataStore
-import com.example.teachevent.data.remote.FakeApiService
 import com.example.teachevent.data.remote.RetrofitClient
 import com.example.teachevent.data.repository.EventRepositoryImpl
 import com.example.teachevent.ui.navigation.TechEventNavGraph
@@ -37,7 +35,6 @@ class MainActivity : ComponentActivity() {
 
         val repository = EventRepositoryImpl(RetrofitClient.apiService, database.eventDao())
 
-
         val viewModelFactory = object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 if (modelClass.isAssignableFrom(EventViewModel::class.java)) {
@@ -49,7 +46,6 @@ class MainActivity : ComponentActivity() {
         }
 
         val viewModel = ViewModelProvider(this, viewModelFactory)[EventViewModel::class.java]
-
 
         val themeDataStore = ThemeDataStore(this)
 
@@ -64,7 +60,7 @@ class MainActivity : ComponentActivity() {
                         val navController = rememberNavController()
                         TechEventNavGraph(
                             navController = navController,
-                            viewModel = viewModel,
+                            eventViewModel = viewModel,
                             isDarkMode = isDarkMode,
                             onThemeChange = { darkMode ->
                                 lifecycleScope.launch {

@@ -3,9 +3,12 @@ package com.example.teachevent.ui.navigation
 
 import kotlinx.serialization.Serializable
 
-interface Routes {
+sealed interface Routes {
     @Serializable
-    object Catalog : Routes
+    data object Login : Routes
+
+    @Serializable
+    data object Catalog : Routes
 
     @Serializable
     data class Detail(val eventId: String) : Routes
